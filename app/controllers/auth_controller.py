@@ -1,93 +1,47 @@
-from flask import Blueprint, jsonify, current_app, request
-import google.generativeai as genai
-import psycopg2
-from models import db, User
+from flask import Blueprint, request, jsonify
+import logging
+from app.models import db
+from app.models.user import User
 
-api = Blueprint('api', __name__)
+logger = logging.getLogger(__name__)
 
-@api.route('/test-db', methods=['GET'])
-def test_db_connection():
-    """Test connection to PostgreSQL database."""
-    try:
-        # Test using SQLAlchemy connection
-        db.session.execute('SELECT 1')
-        
-        # Test using direct psycopg2 connection to verify credentials
-        conn = psycopg2.connect(
-            host=current_app.config.get('SQLALCHEMY_DATABASE_URI').split('@')[1].split('/')[0].split(':')[0],
-            database=current_app.config.get('SQLALCHEMY_DATABASE_URI').split('/')[-1],
-            user=current_app.config.get('SQLALCHEMY_DATABASE_URI').split('://')[1].split(':')[0],
-            password=current_app.config.get('SQLALCHEMY_DATABASE_URI').split(':')[2].split('@')[0]
-        )
-        conn.close()
-        
-        return jsonify({
-            'status': 'success',
-            'message': 'Successfully connected to PostgreSQL database'
-        })
-    except Exception as e:
-        return jsonify({
-            'status': 'error',
-            'message': f'Failed to connect to database: {str(e)}'
-        }), 500
+auth_bp = Blueprint('auth', __name__)
 
-@api.route('/test-gemini', methods=['GET'])
-def test_gemini_connection():
-    """Test connection to Gemini API."""
-    try:
-        # Configure the API key
-        api_key = current_app.config.get('GEMINI_API_KEY')
-        if not api_key:
-            return jsonify({
-                'status': 'error',
-                'message': 'Gemini API key not configured'
-            }), 400
-        
-        # Initialize Gemini API
-        genai.configure(api_key=api_key)
-        
-        # Test the API key with a simple call
-        model = genai.GenerativeModel('gemini-2.0-flash')
-        response = model.generate_content("Hello, this is a test.")
-        
-        return jsonify({
-            'status': 'success',
-            'message': 'Successfully connected to Gemini API',
-            'test_response': response.text
-        })
-    except Exception as e:
-        return jsonify({
-            'status': 'error',
-            'message': f'Failed to connect to Gemini API: {str(e)}'
-        }), 500
-
-@api.route('/register', methods=['POST'])
+@auth_bp.route('/register', methods=['POST'])
 def register_user():
     """Register a new user."""
     try:
+        logger.info("Processing user registration request")
         data = request.get_json()
+        logger.debug(f"Registration data received: {data}")
         
         # Extract user details
         fullName = data.get('fullName')
         email = data.get('email')
         role = data.get('role', 'Member')
         
+        logger.info(f"Registering user: {email}, role: {role}")
+        
         # Validate required fields
         if not fullName or not email:
+            logger.warning("Registration failed: Missing required fields")
             return jsonify({
                 'status': 'error',
                 'message': 'Full name and email are required'
             }), 400
         
         # Check if user already exists
+        logger.info(f"Checking if user already exists: {email}")
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
+            logger.warning(f"User already exists with email: {email}")
             return jsonify({
                 'status': 'error',
                 'message': 'User with this email already exists'
             }), 409
         
         # Create new user
+        logger.info(f"Creating new user: {email}")
         new_user = User(
             fullName=fullName,
             email=email,
@@ -95,8 +49,12 @@ def register_user():
         )
         
         # Save to database
+        logger.info("Adding user to database session")
         db.session.add(new_user)
+        
+        logger.info("Committing user to database")
         db.session.commit()
+        logger.info(f"User successfully registered: {email}")
         
         return jsonify({
             'status': 'success',
@@ -104,13 +62,15 @@ def register_user():
         }), 201
         
     except Exception as e:
+        logger.error(f"Registration failed with exception: {str(e)}")
+        logger.exception("Detailed exception information:")
         db.session.rollback()
         return jsonify({
             'status': 'error',
             'message': f'Failed to register user: {str(e)}'
         }), 500
 
-@api.route('/verifylogin', methods=['POST'])
+@auth_bp.route('/verifylogin', methods=['POST'])
 def verify_login():
     """Verify user login based on email and role."""
     try:
