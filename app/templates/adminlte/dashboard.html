@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Dashboard</title>
+    
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/css/adminlte.min.css">
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+            </ul>
+
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <span class="nav-link">Welcome, {{ current_admin.username }}!</span>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('adminlte.logout') }}">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.navbar -->
+
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="{{ url_for('adminlte.dashboard') }}" class="brand-link">
+                <img src="https://adminlte.io/themes/v3/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">Admin Panel</span>
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <li class="nav-item">
+                            <a href="{{ url_for('adminlte.dashboard') }}" class="nav-link active">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url_for('adminlte.users') }}" class="nav-link">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>Users</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url_for('adminlte.api_stats') }}" class="nav-link">
+                                <i class="nav-icon fas fa-chart-bar"></i>
+                                <p>API Statistics</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url_for('adminlte.settings') }}" class="nav-link">
+                                <i class="nav-icon fas fa-cogs"></i>
+                                <p>Settings</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url_for('adminlte.change_password') }}" class="nav-link">
+                                <i class="nav-icon fas fa-key"></i>
+                                <p>Change Password</p>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">Dashboard</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="{{ url_for('adminlte.dashboard') }}">Home</a></li>
+                                <li class="breadcrumb-item active">Dashboard</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <!-- Flash messages -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <!-- Small boxes (Stat box) -->
+                    <div class="row">
+                        <div class="col-lg-3 col-6">
+                            <!-- small box -->
+                            <div class="small-box bg-info">
+                                <div class="inner">
+                                    <h3>{{ total_users }}</h3>
+                                    <p>Total Users</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <a href="{{ url_for('adminlte.users') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <div class="col-lg-3 col-6">
+                            <!-- small box -->
+                            <div class="small-box bg-success">
+                                <div class="inner">
+                                    <h3>{{ api_stats.total_hits or 0 }}</h3>
+                                    <p>API Hits</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <a href="{{ url_for('adminlte.api_stats') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <div class="col-lg-3 col-6">
+                            <!-- small box -->
+                            <div class="small-box bg-warning">
+                                <div class="inner">
+                                    <h3>{{ api_stats.endpoint_stats|length or 0 }}</h3>
+                                    <p>Active Endpoints</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-plug"></i>
+                                </div>
+                                <a href="{{ url_for('adminlte.api_stats') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <div class="col-lg-3 col-6">
+                            <!-- small box -->
+                            <div class="small-box bg-{{ 'success' if gemini_key_status == 'Configured' else 'danger' }}">
+                                <div class="inner">
+                                    <h3>{{ gemini_key_status }}</h3>
+                                    <p>Gemini API</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-key"></i>
+                                </div>
+                                <a href="{{ url_for('adminlte.settings') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                    </div>
+                    <!-- /.row -->
+
+                    <!-- Main row -->
+                    <div class="row">
+                        <!-- Left col -->
+                        <section class="col-lg-7 connectedSortable">
+                            <!-- Recent Users -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                        <i class="fas fa-users mr-1"></i>
+                                        Recent Users
+                                    </h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Role</th>
+                                                    <th>Created</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for user in recent_users %}
+                                                <tr>
+                                                    <td>{{ user.fullName }}</td>
+                                                    <td>{{ user.email }}</td>
+                                                    <td>
+                                                        <span class="badge badge-{{ 'success' if user.role == 'Admin' else 'primary' }}">
+                                                            {{ user.role }}
+                                                        </span>
+                                                    </td>
+                                                    <td>{{ user.created_at.strftime('%Y-%m-%d') if user.created_at else 'N/A' }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.table-responsive -->
+                                </div>
+                                <!-- /.card-body -->
+                                <div class="card-footer clearfix">
+                                    <a href="{{ url_for('adminlte.users') }}" class="btn btn-sm btn-info float-left">View All Users</a>
+                                </div>
+                                <!-- /.card-footer -->
+                            </div>
+                            <!-- /.card -->
+                        </section>
+                        <!-- /.Left col -->
+
+                        <!-- right col (We are only adding the ID to make the widgets sortable)-->
+                        <section class="col-lg-5 connectedSortable">
+                            <!-- API Endpoints -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                        <i class="fas fa-chart-bar mr-1"></i>
+                                        Top API Endpoints
+                                    </h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    {% if api_stats.endpoint_stats %}
+                                        {% for endpoint in api_stats.endpoint_stats[:5] %}
+                                        <div class="progress-group">
+                                            <span class="float-right"><b>{{ endpoint.hit_count }}</b> hits</span>
+                                            <span class="progress-text">{{ endpoint.method }} {{ endpoint.endpoint }}</span>
+                                            <div class="progress progress-sm">
+                                                <div class="progress-bar bg-primary" style="width: {{ (endpoint.hit_count / api_stats.endpoint_stats[0].hit_count * 100) if api_stats.endpoint_stats else 0 }}%"></div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <p class="text-muted">No API hits recorded yet.</p>
+                                    {% endif %}
+                                </div>
+                                <!-- /.card-body -->
+                                <div class="card-footer clearfix">
+                                    <a href="{{ url_for('adminlte.api_stats') }}" class="btn btn-sm btn-info float-left">View All Stats</a>
+                                </div>
+                                <!-- /.card-footer -->
+                            </div>
+                            <!-- /.card -->
+
+                            <!-- System Status -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                        <i class="fas fa-cogs mr-1"></i>
+                                        System Status
+                                    </h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="description-block border-right">
+                                                <span class="description-percentage text-{{ 'success' if gemini_key_status == 'Configured' else 'danger' }}">
+                                                    <i class="fas fa-{{ 'check' if gemini_key_status == 'Configured' else 'times' }}"></i>
+                                                </span>
+                                                <h5 class="description-header">{{ gemini_key_status }}</h5>
+                                                <span class="description-text">GEMINI API</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="description-block">
+                                                <span class="description-percentage text-success">
+                                                    <i class="fas fa-check"></i>
+                                                </span>
+                                                <h5 class="description-header">Online</h5>
+                                                <span class="description-text">DATABASE</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </section>
+                        <!-- right col -->
+                    </div>
+                    <!-- /.row (main row) -->
+                </div><!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+        
+        <footer class="main-footer">
+            <strong>Copyright &copy; 2024 Admin Panel.</strong>
+            All rights reserved.
+            <div class="float-right d-none d-sm-inline-block">
+                <b>Version</b> 1.0.0
+            </div>
+        </footer>
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/js/adminlte.min.js"></script>
+</body>
+</html> 

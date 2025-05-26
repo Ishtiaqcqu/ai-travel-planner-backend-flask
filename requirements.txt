@@ -6,3 +6,6 @@ SQLAlchemy==2.0.23
 Flask-SQLAlchemy==3.1.1
 Flask-Migrate==4.0.5
 Flask-Cors==4.0.0 
+firebase_admin
+Werkzeug==2.3.7
+requests==2.31.0

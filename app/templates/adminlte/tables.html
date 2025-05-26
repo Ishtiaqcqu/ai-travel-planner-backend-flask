@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdminLTE - Tables</title>
+    
+    <!-- Font Awesome (using CDN for simplicity) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- AdminLTE CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='adminlte/css/adminlte.css') }}">
+    
+    <!-- Google Font (Source Sans Pro) -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        <!-- Header Navbar -->
+        <header class="main-header">
+            <!-- Logo -->
+            <a href="#" class="logo">
+                <span>AdminLTE</span>
+            </a>
+            
+            <!-- Header Navbar -->
+            <nav class="navbar">
+                <a href="#" class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </a>
+                
+                <ul class="navbar-nav ml-auto">
+                    <!-- Messages Dropdown Menu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-comments"></i>
+                            <span class="badge badge-danger">3</span>
+                        </a>
+                    </li>
+                    <!-- Notifications Dropdown Menu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge badge-warning">15</span>
+                        </a>
+                    </li>
+                    <!-- User Account Menu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-user"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar">
+            <section class="sidebar">
+                <!-- Sidebar user panel -->
+                <div class="user-panel" style="padding: 10px; margin-bottom: 20px; display: flex; align-items: center;">
+                    <div style="width: 40px; height: 40px; background-color: #fff; border-radius: 50%; overflow: hidden; margin-right: 10px;">
+                        <img src="https://via.placeholder.com/40" alt="User Image" style="width: 100%; height: 100%;">
+                    </div>
+                    <div>
+                        <p style="color: #fff; margin: 0;">Admin User</p>
+                        <a href="#" style="color: #ccc; font-size: 12px;"><i class="fas fa-circle" style="color: #3c8dbc; font-size: 8px;"></i> Online</a>
+                    </div>
+                </div>
+                
+                <!-- Sidebar Menu -->
+                <ul class="sidebar-menu">
+                    <li>
+                        <a href="{{ url_for('adminlte.dashboard') }}">
+                            <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('adminlte.blank') }}">
+                            <i class="fas fa-file"></i> <span>Blank Page</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="{{ url_for('adminlte.tables') }}">
+                            <i class="fas fa-table"></i> <span>Tables</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('adminlte.forms') }}">
+                            <i class="fas fa-edit"></i> <span>Forms</span>
+                        </a>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fas fa-cog"></i> <span>Settings</span>
+                            <i class="fas fa-angle-left pull-right" style="float: right;"></i>
+                        </a>
+                        <ul class="treeview-menu" style="display: none; list-style: none; padding-left: 30px;">
+                            <li><a href="#"><i class="fas fa-circle-notch"></i> General</a></li>
+                            <li><a href="#"><i class="fas fa-circle-notch"></i> Security</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    Tables
+                    <small>advanced tables</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('adminlte.dashboard') }}"><i class="fas fa-dashboard"></i> Home</a></li>
+                    <li class="breadcrumb-item active">Tables</li>
+                </ol>
+            </section>
+            
+            <!-- Main content -->
+            <section class="content">
+                <!-- Simple Tables -->
+                <div class="row" style="display: flex; flex-wrap: wrap; margin: 0 -10px;">
+                    <div class="col-md-12" style="padding: 0 10px; flex: 0 0 100%; max-width: 100%;">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">Simple Data Table</h3>
+                                <div class="box-tools" style="position: absolute; right: 10px; top: 5px;">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>User</th>
+                                                <th>Date</th>
+                                                <th>Status</th>
+                                                <th>Reason</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>183</td>
+                                                <td>John Doe</td>
+                                                <td>11-7-2023</td>
+                                                <td><span class="badge bg-green" style="background-color: #00a65a; color: white; padding: 2px 5px; border-radius: 3px;">Approved</span></td>
+                                                <td>Bacon ipsum dolor sit amet...</td>
+                                                <td>
+                                                    <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></a>
+                                                    <a href="#" class="btn btn-info btn-sm"><i class="fas fa-edit"></i></a>
+                                                    <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>219</td>
+                                                <td>Jane Smith</td>
+                                                <td>11-7-2023</td>
+                                                <td><span class="badge bg-yellow" style="background-color: #f39c12; color: white; padding: 2px 5px; border-radius: 3px;">Pending</span></td>
+                                                <td>Bacon ipsum dolor sit amet...</td>
+                                                <td>
+                                                    <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></a>
+                                                    <a href="#" class="btn btn-info btn-sm"><i class="fas fa-edit"></i></a>
+                                                    <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>657</td>
+                                                <td>Bob Jackson</td>
+                                                <td>11-7-2023</td>
+                                                <td><span class="badge bg-red" style="background-color: #dd4b39; color: white; padding: 2px 5px; border-radius: 3px;">Denied</span></td>
+                                                <td>Bacon ipsum dolor sit amet...</td>
+                                                <td>
+                                                    <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></a>
+                                                    <a href="#" class="btn btn-info btn-sm"><i class="fas fa-edit"></i></a>
+                                                    <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>175</td>
+                                                <td>Mike Johnson</td>
+                                                <td>11-7-2023</td>
+                                                <td><span class="badge bg-aqua" style="background-color: #00c0ef; color: white; padding: 2px 5px; border-radius: 3px;">Processing</span></td>
+                                                <td>Bacon ipsum dolor sit amet...</td>
+                                                <td>
+                                                    <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></a>
+                                                    <a href="#" class="btn btn-info btn-sm"><i class="fas fa-edit"></i></a>
+                                                    <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Bordered Table -->
+                <div class="row" style="display: flex; flex-wrap: wrap; margin: 20px -10px 0;">
+                    <div class="col-md-6" style="padding: 0 10px; flex: 0 0 50%; max-width: 50%;">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">Bordered Table</h3>
+                                <div class="box-tools" style="position: absolute; right: 10px; top: 5px;">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <table class="table" style="border: 1px solid #f4f4f4;">
+                                    <thead>
+                                        <tr>
+                                            <th style="border: 1px solid #f4f4f4;">ID</th>
+                                            <th style="border: 1px solid #f4f4f4;">Task</th>
+                                            <th style="border: 1px solid #f4f4f4;">Progress</th>
+                                            <th style="border: 1px solid #f4f4f4;">Label</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="border: 1px solid #f4f4f4;">1</td>
+                                            <td style="border: 1px solid #f4f4f4;">Update software</td>
+                                            <td style="border: 1px solid #f4f4f4;">
+                                                <div style="width: 55%; height: 10px; background-color: #00c0ef; border-radius: 5px;"></div>
+                                            </td>
+                                            <td style="border: 1px solid #f4f4f4;"><span class="badge bg-info" style="background-color: #00c0ef; color: white; padding: 2px 5px; border-radius: 3px;">55%</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid #f4f4f4;">2</td>
+                                            <td style="border: 1px solid #f4f4f4;">Clean database</td>
+                                            <td style="border: 1px solid #f4f4f4;">
+                                                <div style="width: 70%; height: 10px; background-color: #00a65a; border-radius: 5px;"></div>
+                                            </td>
+                                            <td style="border: 1px solid #f4f4f4;"><span class="badge bg-green" style="background-color: #00a65a; color: white; padding: 2px 5px; border-radius: 3px;">70%</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid #f4f4f4;">3</td>
+                                            <td style="border: 1px solid #f4f4f4;">Fix bugs</td>
+                                            <td style="border: 1px solid #f4f4f4;">
+                                                <div style="width: 30%; height: 10px; background-color: #f39c12; border-radius: 5px;"></div>
+                                            </td>
+                                            <td style="border: 1px solid #f4f4f4;"><span class="badge bg-yellow" style="background-color: #f39c12; color: white; padding: 2px 5px; border-radius: 3px;">30%</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Condensed Table -->
+                    <div class="col-md-6" style="padding: 0 10px; flex: 0 0 50%; max-width: 50%;">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">Condensed Table</h3>
+                                <div class="box-tools" style="position: absolute; right: 10px; top: 5px;">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <table class="table" style="font-size: 12px;">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>User</th>
+                                            <th>Progress</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>John Doe</td>
+                                            <td>
+                                                <div style="width: 85%; height: 7px; background-color: #00a65a; border-radius: 3px;"></div>
+                                            </td>
+                                            <td><span class="badge bg-green" style="background-color: #00a65a; color: white; padding: 1px 4px; border-radius: 2px; font-size: 10px;">Complete</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>Jane Smith</td>
+                                            <td>
+                                                <div style="width: 50%; height: 7px; background-color: #00c0ef; border-radius: 3px;"></div>
+                                            </td>
+                                            <td><span class="badge bg-info" style="background-color: #00c0ef; color: white; padding: 1px 4px; border-radius: 2px; font-size: 10px;">In Progress</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>Bob Jackson</td>
+                                            <td>
+                                                <div style="width: 20%; height: 7px; background-color: #f39c12; border-radius: 3px;"></div>
+                                            </td>
+                                            <td><span class="badge bg-warning" style="background-color: #f39c12; color: white; padding: 1px 4px; border-radius: 2px; font-size: 10px;">Started</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>4</td>
+                                            <td>Mike Johnson</td>
+                                            <td>
+                                                <div style="width: 0%; height: 7px; background-color: #dd4b39; border-radius: 3px;"></div>
+                                            </td>
+                                            <td><span class="badge bg-danger" style="background-color: #dd4b39; color: white; padding: 1px 4px; border-radius: 2px; font-size: 10px;">Not Started</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 1.0.0
+            </div>
+            <strong>Copyright &copy; 2023 <a href="https://adminlte.io">AdminLTE</a>.</strong> All rights reserved.
+        </footer>
+    </div>
+    
+    <!-- AdminLTE JS -->
+    <script src="{{ url_for('static', filename='adminlte/js/adminlte.js') }}"></script>
+</body>
+</html> 

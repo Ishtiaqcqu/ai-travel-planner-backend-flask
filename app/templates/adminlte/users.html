@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Panel | Users</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/dataTables.bootstrap4.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/css/adminlte.min.css">
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+    </ul>
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('adminlte.logout') }}">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="{{ url_for('adminlte.dashboard') }}" class="brand-link">
+      <img src="https://adminlte.io/themes/v3/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">Admin Panel</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <li class="nav-item">
+            <a href="{{ url_for('adminlte.dashboard') }}" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>Dashboard</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('adminlte.users') }}" class="nav-link active">
+              <i class="nav-icon fas fa-users"></i>
+              <p>Users</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('adminlte.api_stats') }}" class="nav-link">
+              <i class="nav-icon fas fa-chart-bar"></i>
+              <p>API Statistics</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('adminlte.settings') }}" class="nav-link">
+              <i class="nav-icon fas fa-cogs"></i>
+              <p>Settings</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('adminlte.change_password') }}" class="nav-link">
+              <i class="nav-icon fas fa-key"></i>
+              <p>Change Password</p>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Users Management</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{{ url_for('adminlte.dashboard') }}">Home</a></li>
+              <li class="breadcrumb-item active">Users</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">All Users</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="usersTable" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Passport Number</th>
+                    <th>Created At</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for user in users.items %}
+                  <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.fullName }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                      <span class="badge badge-{{ 'success' if user.role == 'Admin' else 'primary' }}">
+                        {{ user.role }}
+                      </span>
+                    </td>
+                    <td>{{ user.passport_number or 'N/A' }}</td>
+                    <td>{{ user.created_at.strftime('%Y-%m-%d %H:%M') if user.created_at else 'N/A' }}</td>
+                  </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+              
+              <!-- Pagination -->
+              {% if users.pages > 1 %}
+              <div class="card-footer clearfix">
+                <ul class="pagination pagination-sm m-0 float-right">
+                  {% if users.has_prev %}
+                    <li class="page-item">
+                      <a class="page-link" href="{{ url_for('adminlte.users', page=users.prev_num) }}">&laquo;</a>
+                    </li>
+                  {% endif %}
+                  
+                  {% for page_num in users.iter_pages() %}
+                    {% if page_num %}
+                      {% if page_num != users.page %}
+                        <li class="page-item">
+                          <a class="page-link" href="{{ url_for('adminlte.users', page=page_num) }}">{{ page_num }}</a>
+                        </li>
+                      {% else %}
+                        <li class="page-item active">
+                          <span class="page-link">{{ page_num }}</span>
+                        </li>
+                      {% endif %}
+                    {% else %}
+                      <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+                  
+                  {% if users.has_next %}
+                    <li class="page-item">
+                      <a class="page-link" href="{{ url_for('adminlte.users', page=users.next_num) }}">&raquo;</a>
+                    </li>
+                  {% endif %}
+                </ul>
+              </div>
+              {% endif %}
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <footer class="main-footer">
+    <strong>Copyright &copy; 2024 Admin Panel.</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 1.0.0
+    </div>
+  </footer>
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+<!-- AdminLTE App -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/js/adminlte.min.js"></script>
+
+<script>
+  $(function () {
+    $("#usersTable").DataTable({
+      "responsive": true,
+      "lengthChange": false,
+      "autoWidth": false,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "paging": false // Disable DataTables pagination since we use Flask pagination
+    });
+  });
+</script>
+</body>
+</html> 

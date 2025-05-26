@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdminLTE - Forms</title>
+    
+    <!-- Font Awesome (using CDN for simplicity) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- AdminLTE CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='adminlte/css/adminlte.css') }}">
+    
+    <!-- Google Font (Source Sans Pro) -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        <!-- Header Navbar -->
+        <header class="main-header">
+            <!-- Logo -->
+            <a href="#" class="logo">
+                <span>AdminLTE</span>
+            </a>
+            
+            <!-- Header Navbar -->
+            <nav class="navbar">
+                <a href="#" class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </a>
+                
+                <ul class="navbar-nav ml-auto">
+                    <!-- Messages Dropdown Menu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-comments"></i>
+                            <span class="badge badge-danger">3</span>
+                        </a>
+                    </li>
+                    <!-- Notifications Dropdown Menu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge badge-warning">15</span>
+                        </a>
+                    </li>
+                    <!-- User Account Menu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-user"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar">
+            <section class="sidebar">
+                <!-- Sidebar user panel -->
+                <div class="user-panel" style="padding: 10px; margin-bottom: 20px; display: flex; align-items: center;">
+                    <div style="width: 40px; height: 40px; background-color: #fff; border-radius: 50%; overflow: hidden; margin-right: 10px;">
+                        <img src="https://via.placeholder.com/40" alt="User Image" style="width: 100%; height: 100%;">
+                    </div>
+                    <div>
+                        <p style="color: #fff; margin: 0;">Admin User</p>
+                        <a href="#" style="color: #ccc; font-size: 12px;"><i class="fas fa-circle" style="color: #3c8dbc; font-size: 8px;"></i> Online</a>
+                    </div>
+                </div>
+                
+                <!-- Sidebar Menu -->
+                <ul class="sidebar-menu">
+                    <li>
+                        <a href="{{ url_for('adminlte.dashboard') }}">
+                            <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('adminlte.blank') }}">
+                            <i class="fas fa-file"></i> <span>Blank Page</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('adminlte.tables') }}">
+                            <i class="fas fa-table"></i> <span>Tables</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="{{ url_for('adminlte.forms') }}">
+                            <i class="fas fa-edit"></i> <span>Forms</span>
+                        </a>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fas fa-cog"></i> <span>Settings</span>
+                            <i class="fas fa-angle-left pull-right" style="float: right;"></i>
+                        </a>
+                        <ul class="treeview-menu" style="display: none; list-style: none; padding-left: 30px;">
+                            <li><a href="#"><i class="fas fa-circle-notch"></i> General</a></li>
+                            <li><a href="#"><i class="fas fa-circle-notch"></i> Security</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    Forms
+                    <small>input elements</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('adminlte.dashboard') }}"><i class="fas fa-dashboard"></i> Home</a></li>
+                    <li class="breadcrumb-item active">Forms</li>
+                </ol>
+            </section>
+            
+            <!-- Main content -->
+            <section class="content">
+                <div class="row" style="display: flex; flex-wrap: wrap; margin: 0 -10px;">
+                    <!-- General Form -->
+                    <div class="col-md-6" style="padding: 0 10px; flex: 0 0 50%; max-width: 50%;">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">General Form</h3>
+                                <div class="box-tools" style="position: absolute; right: 10px; top: 5px;">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 15px;">
+                                        <label for="exampleInputEmail1">Email address</label>
+                                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" style="width: 100%; padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px;">
+                                        <small class="form-text text-muted" style="color: #6c757d; font-size: 85%;">We'll never share your email with anyone else.</small>
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 15px;">
+                                        <label for="exampleInputPassword1">Password</label>
+                                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" style="width: 100%; padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px;">
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 15px;">
+                                        <label for="exampleInputFile">File input</label>
+                                        <input type="file" id="exampleInputFile" style="display: block; width: 100%;">
+                                        <small class="form-text text-muted" style="color: #6c757d; font-size: 85%;">Upload a profile picture or document.</small>
+                                    </div>
+                                    <div class="form-check" style="margin-bottom: 15px;">
+                                        <input type="checkbox" class="form-check-input" id="exampleCheck1" style="margin-right: 5px;">
+                                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <!-- Quick Form -->
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">Quick Form</h3>
+                                <div class="box-tools" style="position: absolute; right: 10px; top: 5px;">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 15px;">
+                                        <label for="title">Title</label>
+                                        <input type="text" class="form-control" id="title" placeholder="Enter title" style="width: 100%; padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px;">
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 15px;">
+                                        <label for="description">Description</label>
+                                        <textarea class="form-control" id="description" rows="3" style="width: 100%; padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px;"></textarea>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <button type="submit" class="btn btn-danger">Cancel</button>
+                                        <button type="submit" class="btn btn-success">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Advanced Form -->
+                    <div class="col-md-6" style="padding: 0 10px; flex: 0 0 50%; max-width: 50%;">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">Advanced Form</h3>
+                                <div class="box-tools" style="position: absolute; right: 10px; top: 5px;">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <form>
+                                    <div class="form-group" style="margin-bottom: 15px;">
+                                        <label for="fullName">Full Name</label>
+                                        <input type="text" class="form-control" id="fullName" placeholder="Enter full name" style="width: 100%; padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px;">
+                                    </div>
+                                    <div class="form-row" style="display: flex; margin: 0 -5px;">
+                                        <div style="flex: 0 0 50%; max-width: 50%; padding: 0 5px;">
+                                            <div class="form-group" style="margin-bottom: 15px;">
+                                                <label for="city">City</label>
+                                                <input type="text" class="form-control" id="city" placeholder="City" style="width: 100%; padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px;">
+                                            </div>
+                                        </div>
+                                        <div style="flex: 0 0 30%; max-width: 30%; padding: 0 5px;">
+                                            <div class="form-group" style="margin-bottom: 15px;">
+                                                <label for="state">State</label>
+                                                <select id="state" class="form-control" style="width: 100%; padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; height: 34px;">
+                                                    <option selected>Choose...</option>
+                                                    <option>CA</option>
+                                                    <option>NY</option>
+                                                    <option>TX</option>
+                                                    <option>FL</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div style="flex: 0 0 20%; max-width: 20%; padding: 0 5px;">
+                                            <div class="form-group" style="margin-bottom: 15px;">
+                                                <label for="zip">Zip</label>
+                                                <input type="text" class="form-control" id="zip" placeholder="Zip" style="width: 100%; padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 15px;">
+                                        <label>Date of Birth</label>
+                                        <div class="form-row" style="display: flex; margin: 0 -5px;">
+                                            <div style="flex: 0 0 33.333333%; max-width: 33.333333%; padding: 0 5px;">
+                                                <select class="form-control" style="width: 100%; padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; height: 34px;">
+                                                    <option selected>Month</option>
+                                                    <option>January</option>
+                                                    <option>February</option>
+                                                    <option>March</option>
+                                                    <!-- Other months -->
+                                                </select>
+                                            </div>
+                                            <div style="flex: 0 0 33.333333%; max-width: 33.333333%; padding: 0 5px;">
+                                                <select class="form-control" style="width: 100%; padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; height: 34px;">
+                                                    <option selected>Day</option>
+                                                    <option>1</option>
+                                                    <option>2</option>
+                                                    <!-- Other days -->
+                                                </select>
+                                            </div>
+                                            <div style="flex: 0 0 33.333333%; max-width: 33.333333%; padding: 0 5px;">
+                                                <select class="form-control" style="width: 100%; padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; height: 34px;">
+                                                    <option selected>Year</option>
+                                                    <option>2000</option>
+                                                    <option>1999</option>
+                                                    <!-- Other years -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 15px;">
+                                        <label>Gender</label>
+                                        <div>
+                                            <div class="form-check form-check-inline" style="display: inline-block; margin-right: 20px;">
+                                                <input class="form-check-input" type="radio" name="gender" id="male" value="male" style="margin-right: 5px;">
+                                                <label class="form-check-label" for="male">Male</label>
+                                            </div>
+                                            <div class="form-check form-check-inline" style="display: inline-block; margin-right: 20px;">
+                                                <input class="form-check-input" type="radio" name="gender" id="female" value="female" style="margin-right: 5px;">
+                                                <label class="form-check-label" for="female">Female</label>
+                                            </div>
+                                            <div class="form-check form-check-inline" style="display: inline-block;">
+                                                <input class="form-check-input" type="radio" name="gender" id="other" value="other" style="margin-right: 5px;">
+                                                <label class="form-check-label" for="other">Other</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 15px;">
+                                        <label>Interests</label>
+                                        <div>
+                                            <div class="form-check" style="margin-bottom: 5px;">
+                                                <input class="form-check-input" type="checkbox" id="interest1" style="margin-right: 5px;">
+                                                <label class="form-check-label" for="interest1">Sports</label>
+                                            </div>
+                                            <div class="form-check" style="margin-bottom: 5px;">
+                                                <input class="form-check-input" type="checkbox" id="interest2" style="margin-right: 5px;">
+                                                <label class="form-check-label" for="interest2">Movies</label>
+                                            </div>
+                                            <div class="form-check" style="margin-bottom: 5px;">
+                                                <input class="form-check-input" type="checkbox" id="interest3" style="margin-right: 5px;">
+                                                <label class="form-check-label" for="interest3">Music</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Register</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Horizontal Form -->
+                <div class="row" style="display: flex; flex-wrap: wrap; margin: 20px -10px 0;">
+                    <div class="col-md-12" style="padding: 0 10px; flex: 0 0 100%; max-width: 100%;">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">Horizontal Form</h3>
+                                <div class="box-tools" style="position: absolute; right: 10px; top: 5px;">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <form>
+                                    <div class="form-group row" style="display: flex; margin-bottom: 15px;">
+                                        <label for="inputEmail3" class="col-sm-2 col-form-label" style="flex: 0 0 16.666667%; max-width: 16.666667%;">Email</label>
+                                        <div class="col-sm-10" style="flex: 0 0 83.333333%; max-width: 83.333333%;">
+                                            <input type="email" class="form-control" id="inputEmail3" placeholder="Email" style="width: 100%; padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px;">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" style="display: flex; margin-bottom: 15px;">
+                                        <label for="inputPassword3" class="col-sm-2 col-form-label" style="flex: 0 0 16.666667%; max-width: 16.666667%;">Password</label>
+                                        <div class="col-sm-10" style="flex: 0 0 83.333333%; max-width: 83.333333%;">
+                                            <input type="password" class="form-control" id="inputPassword3" placeholder="Password" style="width: 100%; padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px;">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" style="display: flex; margin-bottom: 15px;">
+                                        <div class="col-sm-2" style="flex: 0 0 16.666667%; max-width: 16.666667%;">Radios</div>
+                                        <div class="col-sm-10" style="flex: 0 0 83.333333%; max-width: 83.333333%;">
+                                            <div class="form-check" style="margin-bottom: 5px;">
+                                                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked style="margin-right: 5px;">
+                                                <label class="form-check-label" for="gridRadios1">
+                                                    First radio
+                                                </label>
+                                            </div>
+                                            <div class="form-check" style="margin-bottom: 5px;">
+                                                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2" style="margin-right: 5px;">
+                                                <label class="form-check-label" for="gridRadios2">
+                                                    Second radio
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" style="display: flex; margin-bottom: 15px;">
+                                        <div class="col-sm-10 offset-sm-2" style="flex: 0 0 83.333333%; max-width: 83.333333%; margin-left: 16.666667%;">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="gridCheck1" style="margin-right: 5px;">
+                                                <label class="form-check-label" for="gridCheck1">
+                                                    Remember me
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" style="display: flex; margin-bottom: 15px;">
+                                        <div class="col-sm-10 offset-sm-2" style="flex: 0 0 83.333333%; max-width: 83.333333%; margin-left: 16.666667%;">
+                                            <button type="submit" class="btn btn-primary">Sign in</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 1.0.0
+            </div>
+            <strong>Copyright &copy; 2023 <a href="https://adminlte.io">AdminLTE</a>.</strong> All rights reserved.
+        </footer>
+    </div>
+    
+    <!-- AdminLTE JS -->
+    <script src="{{ url_for('static', filename='adminlte/js/adminlte.js') }}"></script>
+</body>
+</html> 

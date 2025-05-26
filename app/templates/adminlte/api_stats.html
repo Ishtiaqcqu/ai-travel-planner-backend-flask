@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Panel | API Statistics</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/dataTables.bootstrap4.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/css/adminlte.min.css">
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+    </ul>
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('adminlte.logout') }}">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="{{ url_for('adminlte.dashboard') }}" class="brand-link">
+      <img src="https://adminlte.io/themes/v3/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">Admin Panel</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <li class="nav-item">
+            <a href="{{ url_for('adminlte.dashboard') }}" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>Dashboard</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('adminlte.users') }}" class="nav-link">
+              <i class="nav-icon fas fa-users"></i>
+              <p>Users</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('adminlte.api_stats') }}" class="nav-link active">
+              <i class="nav-icon fas fa-chart-bar"></i>
+              <p>API Statistics</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('adminlte.settings') }}" class="nav-link">
+              <i class="nav-icon fas fa-cogs"></i>
+              <p>Settings</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('adminlte.change_password') }}" class="nav-link">
+              <i class="nav-icon fas fa-key"></i>
+              <p>Change Password</p>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">API Statistics</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{{ url_for('adminlte.dashboard') }}">Home</a></li>
+              <li class="breadcrumb-item active">API Statistics</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Summary Cards -->
+        <div class="row">
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>{{ stats.total_hits or 0 }}</h3>
+                <p>Total API Hits</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-success">
+              <div class="inner">
+                <h3>{{ stats.endpoint_stats|length or 0 }}</h3>
+                <p>Active Endpoints</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-plug"></i>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-warning">
+              <div class="inner">
+                <h3>
+                  {% set successful_count = 0 %}
+                  {% for status in stats.status_stats %}
+                    {% if status.status_code == 200 %}
+                      {% set successful_count = status.count %}
+                    {% endif %}
+                  {% endfor %}
+                  {{ successful_count }}
+                </h3>
+                <p>Successful Requests</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-check-circle"></i>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-danger">
+              <div class="inner">
+                <h3>
+                  {% set error_count = 0 %}
+                  {% for status in stats.status_stats %}
+                    {% if status.status_code != 200 %}
+                      {% set error_count = error_count + status.count %}
+                    {% endif %}
+                  {% endfor %}
+                  {{ error_count }}
+                </h3>
+                <p>Error Responses</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-exclamation-triangle"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Endpoint Statistics Table -->
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">API Endpoint Hit Counts</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="endpointTable" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Endpoint</th>
+                    <th>Method</th>
+                    <th>Hit Count</th>
+                    <th>Avg Response Time (ms)</th>
+                    <th>Performance</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for endpoint in stats.endpoint_stats %}
+                  <tr>
+                    <td><code>{{ endpoint.endpoint }}</code></td>
+                    <td>
+                      <span class="badge badge-{{ 'success' if endpoint.method == 'GET' else 'primary' if endpoint.method == 'POST' else 'warning' if endpoint.method == 'PUT' else 'danger' }}">
+                        {{ endpoint.method }}
+                      </span>
+                    </td>
+                    <td>
+                      <strong>{{ endpoint.hit_count }}</strong>
+                    </td>
+                    <td>{{ endpoint.avg_response_time }}</td>
+                    <td>
+                      {% if endpoint.avg_response_time < 100 %}
+                        <span class="badge badge-success">Fast</span>
+                      {% elif endpoint.avg_response_time < 500 %}
+                        <span class="badge badge-warning">Medium</span>
+                      {% else %}
+                        <span class="badge badge-danger">Slow</span>
+                      {% endif %}
+                    </td>
+                  </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+        <!-- Status Code Statistics -->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Response Status Codes</h3>
+              </div>
+              <div class="card-body">
+                <canvas id="statusChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Top Endpoints by Hits</h3>
+              </div>
+              <div class="card-body">
+                <canvas id="endpointChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <footer class="main-footer">
+    <strong>Copyright &copy; 2024 Admin Panel.</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 1.0.0
+    </div>
+  </footer>
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+<!-- Chart.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<!-- AdminLTE App -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/js/adminlte.min.js"></script>
+
+<script>
+  $(function () {
+    // Initialize DataTable
+    $("#endpointTable").DataTable({
+      "responsive": true,
+      "lengthChange": false,
+      "autoWidth": false,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "paging": true,
+      "pageLength": 10,
+      "order": [[ 2, "desc" ]] // Sort by hit count descending
+    });
+
+    // Status Code Chart
+    var statusCtx = document.getElementById('statusChart').getContext('2d');
+    var statusData = {
+      labels: [{% for status in stats.status_stats %}'{{ status.status_code }}'{% if not loop.last %},{% endif %}{% endfor %}],
+      datasets: [{
+        data: [{% for status in stats.status_stats %}{{ status.count }}{% if not loop.last %},{% endif %}{% endfor %}],
+        backgroundColor: [
+          '#28a745', // 200 - Green
+          '#ffc107', // 300 - Yellow  
+          '#dc3545', // 400 - Red
+          '#6c757d', // 500 - Gray
+        ]
+      }]
+    };
+    
+    new Chart(statusCtx, {
+      type: 'doughnut',
+      data: statusData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }
+    });
+
+    // Top Endpoints Chart
+    var endpointCtx = document.getElementById('endpointChart').getContext('2d');
+    var endpointLabels = [{% for endpoint in stats.endpoint_stats[:5] %}'{{ endpoint.method }} {{ endpoint.endpoint }}'{% if not loop.last %},{% endif %}{% endfor %}];
+    var endpointHits = [{% for endpoint in stats.endpoint_stats[:5] %}{{ endpoint.hit_count }}{% if not loop.last %},{% endif %}{% endfor %}];
+    
+    var endpointData = {
+      labels: endpointLabels,
+      datasets: [{
+        label: 'Hit Count',
+        data: endpointHits,
+        backgroundColor: '#007bff',
+        borderColor: '#0056b3',
+        borderWidth: 1
+      }]
+    };
+    
+    new Chart(endpointCtx, {
+      type: 'bar',
+      data: endpointData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      }
+    });
+  });
+</script>
+</body>
+</html> 

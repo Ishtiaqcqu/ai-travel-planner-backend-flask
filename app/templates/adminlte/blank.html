@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdminLTE - Blank Page</title>
+    
+    <!-- Font Awesome (using CDN for simplicity) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- AdminLTE CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='adminlte/css/adminlte.css') }}">
+    
+    <!-- Google Font (Source Sans Pro) -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        <!-- Header Navbar -->
+        <header class="main-header">
+            <!-- Logo -->
+            <a href="#" class="logo">
+                <span>AdminLTE</span>
+            </a>
+            
+            <!-- Header Navbar -->
+            <nav class="navbar">
+                <a href="#" class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </a>
+                
+                <ul class="navbar-nav ml-auto">
+                    <!-- Messages Dropdown Menu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-comments"></i>
+                            <span class="badge badge-danger">3</span>
+                        </a>
+                    </li>
+                    <!-- Notifications Dropdown Menu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge badge-warning">15</span>
+                        </a>
+                    </li>
+                    <!-- User Account Menu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-user"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar">
+            <section class="sidebar">
+                <!-- Sidebar user panel -->
+                <div class="user-panel" style="padding: 10px; margin-bottom: 20px; display: flex; align-items: center;">
+                    <div style="width: 40px; height: 40px; background-color: #fff; border-radius: 50%; overflow: hidden; margin-right: 10px;">
+                        <img src="https://via.placeholder.com/40" alt="User Image" style="width: 100%; height: 100%;">
+                    </div>
+                    <div>
+                        <p style="color: #fff; margin: 0;">Admin User</p>
+                        <a href="#" style="color: #ccc; font-size: 12px;"><i class="fas fa-circle" style="color: #3c8dbc; font-size: 8px;"></i> Online</a>
+                    </div>
+                </div>
+                
+                <!-- Sidebar Menu -->
+                <ul class="sidebar-menu">
+                    <li>
+                        <a href="{{ url_for('adminlte.dashboard') }}">
+                            <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="{{ url_for('adminlte.blank') }}">
+                            <i class="fas fa-file"></i> <span>Blank Page</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('adminlte.tables') }}">
+                            <i class="fas fa-table"></i> <span>Tables</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('adminlte.forms') }}">
+                            <i class="fas fa-edit"></i> <span>Forms</span>
+                        </a>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fas fa-cog"></i> <span>Settings</span>
+                            <i class="fas fa-angle-left pull-right" style="float: right;"></i>
+                        </a>
+                        <ul class="treeview-menu" style="display: none; list-style: none; padding-left: 30px;">
+                            <li><a href="#"><i class="fas fa-circle-notch"></i> General</a></li>
+                            <li><a href="#"><i class="fas fa-circle-notch"></i> Security</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    Blank Page
+                    <small>it's all started here</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('adminlte.dashboard') }}"><i class="fas fa-dashboard"></i> Home</a></li>
+                    <li class="breadcrumb-item active">Blank Page</li>
+                </ol>
+            </section>
+            
+            <!-- Main content -->
+            <section class="content">
+                <!-- Default box -->
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">Title</h3>
+                        <div class="box-tools" style="position: absolute; right: 10px; top: 5px;">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        Start creating your amazing application!
+                    </div>
+                    <div class="box-footer">
+                        Footer
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 1.0.0
+            </div>
+            <strong>Copyright &copy; 2023 <a href="https://adminlte.io">AdminLTE</a>.</strong> All rights reserved.
+        </footer>
+    </div>
+    
+    <!-- AdminLTE JS -->
+    <script src="{{ url_for('static', filename='adminlte/js/adminlte.js') }}"></script>
+</body>
+</html> 
