@@ -145,8 +145,7 @@ venv\Scripts\activate
 ### Install Dependencies
 ```
 pip install -r requirements.txt
-```
-```
+``
 Collecting Flask==2.3.3
   Downloading Flask-2.3.3-py3-none-any.whl (96 kB)
 ...
